@@ -1,0 +1,190 @@
+<HTML>
+    <head>
+        <style>
+            .board {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5px;
+                width: 320px;
+            }
+            .square {
+                border: 1px solid black; 
+                height: 100px; 
+                width: 100px;
+                font-size: 100px;
+                text-align: center;
+            } 
+            #turn {
+                border: 1px solid black;
+                width: 50px;
+            }
+            #win {
+                border: 1px solid black;
+                width: 50px;
+                height: 100px; 
+            }
+            .square:hover {
+                background-color: yellow;
+            }   
+
+        </style>
+    </head>
+<body>
+    
+    <h1>Tic-Tac-Toe</h1>
+
+    <div id = "turn"> 
+       
+    </div>
+    <div class="board" id="board">
+     //   <script>
+      //      const NUM_SQUARES = 9;
+      //  for (i=0; i<NUM_SQUARES; i++)
+     //   {
+     //       id = "sq"+i;
+     //       document.write( "<div class='square' id='" + id + "'></div>" );
+     //   }
+      //  </script>
+    </div>
+
+    <button id="startBtn">Start Game</button>
+
+
+    <div id="win"></div>
+
+    <script>
+        // To change the content of a HTML item we:
+        // 1) "Get" the item using getElementById or similar
+        // 2) Change the innerHTML value.
+       // let squares = [];
+        let currentPlayer;
+        let gameActive = true;
+
+        // let e = document.getElementById("win");
+        // e.innerHTML = "The winner is X!";
+
+
+       // let x = document.getElementById("sq2");
+       // x.innerHTML = "X";
+
+       //   let o = document.getElementById("sq3");
+      //    o.innerHTML = "O";
+
+        function randomStart () {
+            currentPlayer = Math.random() < 0.5 ? "X":"O";
+            document.getElementById("turn").innerHTML = currentPlayer + "'s turn";
+            document.getElementById("win").innerHTML = "";
+            gameActive = true;
+            }
+
+        function handleSquareClick (idx) {
+            if (!gameActive) return;
+            let square = document.getElementById("sq" + idx);
+            if(square.innerHTML !== "") return;
+            // if (square.innerHTML !== "") {
+                square.innerHTML = currentPlayer;
+                alert("Square" + idx);
+                let moves = [];
+                for(let i=0; i<9; i++) {
+                    let val = document.getElementById("sq" + i).innerText;
+                    moves.push(val === "" ? "-" : val);
+                }
+                let winConditions = [
+                    moves[0] + moves[1] + moves[2],
+                    moves[3] + moves[4] + moves[5],
+                    moves[6] + moves[7] + moves[8],
+                    moves[0] + moves[3] + moves[6],
+                    moves[1] + moves[4] + moves[7],
+                    moves[2] + moves[5] + moves[8],
+                    moves[0] + moves[4] + moves[8],
+                    moves[2] + moves[4] + moves[6]
+                ];
+                let winner = null;
+                winConditions.forEach(str => {
+                    if(str === "XXX") winner = "X";
+                    if(str === "OOO") winner = "O";
+                });
+                if(winner) {
+                    document.getElementById("win").innerHTML = "The winner is " + winner + "!";
+                    gameActive = false;
+                    return;
+                }
+                if(!moves.includes("-")) {
+                    document.getElementById("win").innerHTML = "Stalemate!";
+                    gameActive = false;
+                    return;
+                }
+
+                currentPlayer = currentPlayer === "X" ? "O":"X";
+                document.getElementById("turn").innerHTML = currentPlayer + "'s turn";
+          //  } 
+        
+        }
+
+        function setupBoard() {
+            const boardDiv=document.getElementById("board");
+            boardDiv.innerHTML="";
+            for (let i=0; i<9; i++) {
+                let square = document.createElement("div");
+                square.className = "square";
+                square.id = "sq" + i;
+                square.onclick = function() {
+                    handleSquareClick (i);
+                }; 
+                boardDiv.appendChild(square);
+            }
+        }
+
+        document.getElementById("startBtn").onclick = function() {
+            setupBoard();
+            randomStart();
+        };
+
+        setupBoard();
+        randomStart();
+
+
+        // An event listener/handler tells JS what to watch for,
+        // and what to do when the event happens.
+
+        // We "grab" the items to which we want to attach the handler,
+        // and then tell JS what to do when the event happens....
+
+       // function handleTurnClick(msg) {
+        //    alert(msg);
+       // }
+
+      //  e = document.getElementById("turn");
+        //e.addEventListener("click", handleTurnClick);
+      //  e.addEventListener("click", function() {  // <- make an anonymous "function"
+      //      handleTurnClick("Hey!");  // <- make a call to our handler function and pass info to it in the ()
+      //  })
+
+     //   function popup(sq) {
+    //        alert ("Square " + sq);
+    //        let c = document.getElementById("sq" + sq)
+    //        c.innerHTML = currentPlayer;
+   //         if (currentPlayer == "X") {
+    //        currentPlayer = "O"
+    //         } else {
+    //        currentPlayer = "X"
+    //    }
+   //     }
+
+        
+     //  for (let i=0; i<9; i++){ 
+      //      a = document.getElementById("sq" + i);
+     //       a.addEventListener("click", function() {
+    //            popup(i);
+    //       })
+     //   }
+
+     //   let currentPlayer = "X";
+
+      
+
+    </script>
+
+     
+</body>
+</HTML>
